@@ -1,8 +1,9 @@
 {
   "name": "zv-random-cards",
   "displayName": "zv-random-cards",
-  "description": "VS Code extension to randomly pick out of 52 cards deck.",
-  "version": "1.0.0",
+  "description": "VS Code extension to randomly pick cards.",
+  "publisher": "zveillette",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -10,9 +11,60 @@
     "Other"
   ],
   "activationEvents": [
+    "onCommand:zvRandomCards.draw"
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "ZV Random Cards",
+      "properties": {
+        "zvRandomCards.pickEvery": {
+          "type": "number",
+          "default": -1,
+          "markdownDescription": "Set how often a new card should be picked in seconds. Set to `-1` if no cards should be automatically picked. Draw a card to reset current interval."
+        },
+        "zvRandomCards.enableBadgeNotification": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show a badge on the activity bar if a new card is automatically picked."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "zvRandomCards.draw",
+        "title": "Draw a card",
+        "category": "Random cards",
+        "icon": "$(discard)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "zvRandomCards",
+          "title": "Random cards",
+          "icon": "$(heart)"
+        }
+      ]
+    },
+    "views": {
+      "zvRandomCards": [
+        {
+          "id": "zvRandomCards.cardView",
+          "type": "webview",
+          "name": "Random cards"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "zvRandomCards.draw",
+          "when": "view == zvRandomCards.cardView",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

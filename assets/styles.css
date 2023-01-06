@@ -1,0 +1,21 @@
+html {
+    font-size: 15px;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.card {
+    margin: 1rem 0 1rem 0;
+}
+
+.card-title {
+    font-size: 1.5rem;
+}
+
+.info-text {
+    margin: 0.5rem 0 0.5rem 0;
+}

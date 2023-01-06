@@ -1,14 +1,10 @@
-# zv-random-cards README
-TODO:
+# zv-random-cards
+This extension isn't ready and should be avoided. Thanks !
 
 ## Features
 
-## Extension Settings
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- Pick a random card from a standard deck
+- Enable/Disable automatic card pick and set the interval
 
 ## Known Issues
 
@@ -16,6 +12,4 @@ N/A
 
 ## Release Notes
 
-### 1.0.0
-
-Initial release
+In development, should be avoided.
