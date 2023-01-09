@@ -1,26 +1,5 @@
 import { randomInt } from 'crypto';
-
-export const DECK_TYPES = Object.freeze({
-    standard: {
-        name: 'Standard',
-        cardTypes: [{ name: 'Clubs' }, { name: 'Diamonds' }, { name: 'Hearts' }, { name: 'Spades' }],
-        cards: [
-            { name: 'Ace', points: 11 },
-            { name: '2', points: 2 },
-            { name: '3', points: 3 },
-            { name: '4', points: 4 },
-            { name: '5', points: 5 },
-            { name: '6', points: 6 },
-            { name: '7', points: 7 },
-            { name: '8', points: 8 },
-            { name: '9', points: 9 },
-            { name: '10', points: 10 },
-            { name: 'Jack', points: 10 },
-            { name: 'Queen', points: 10 },
-            { name: 'King', points: 10 },
-        ]
-    } as DeckType
-});
+import { DeckType } from './deck-type';
 
 export class Deck {
     private _cards: Card[] = [];
@@ -37,22 +16,22 @@ export class Deck {
         return this._cards;
     }
 
-
-    /**
-     * Type of deck used to generate the cards
-     */
     public get deckType() {
         return this._deckType;
+    }
+
+    public set deckType(deckType: DeckType) {
+        this._deckType = deckType;
     }
 
     /**
      * Build (or rebuild) deck of cards
      * @returns Mutated instance
      */
-    build(deckType: DeckType) {
-        this._deckType = deckType;
-        this._cards = deckType.cardTypes.reduce((cards, cardType) =>
-            cards.concat(deckType.cards.map((card) => ({ ...card, cardType }))), [] as Card[]);
+    build(deckType?: DeckType) {
+        this._deckType = deckType ? deckType : this._deckType;
+        this._cards = this._deckType.cardTypes.reduce((cards, cardType) =>
+            cards.concat(this._deckType.cards.map((card) => ({ ...card, cardType }))), [] as Card[]);
 
         return this;
     }
@@ -99,16 +78,7 @@ export interface Card {
     cardType?: CardType
 }
 
-interface DeckType {
-    name: string,
-    cards: Card[],
-    cardTypes: {
-        name: string,
-        icon?: string
-    }[]
-}
-
-interface CardType {
+export interface CardType {
     name: string,
     icon?: string
 }

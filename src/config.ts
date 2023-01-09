@@ -1,10 +1,11 @@
 import * as vscode from 'vscode';
 
-const CONFIG_NAME = 'zvRandomCards';
+export const CONFIG_NAME = 'zvRandomCards';
 
-enum ConfigKeys {
+export enum ConfigKeys {
     pickEvery = 'pickEvery',
-    enableBadgeNotification = 'enableBadgeNotification'
+    enableBadgeNotification = 'enableBadgeNotification',
+    deckType = 'deckType'
 }
 
 export class Config {
@@ -14,5 +15,9 @@ export class Config {
 
     static get isBadgeNotificationEnabled(): boolean {
         return Boolean(vscode.workspace.getConfiguration(CONFIG_NAME).get(ConfigKeys.enableBadgeNotification));
+    }
+
+    static get deckType(): string {
+        return String(vscode.workspace.getConfiguration(CONFIG_NAME).get(ConfigKeys.deckType));
     }
 }

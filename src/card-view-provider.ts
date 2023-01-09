@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Config } from './config';
-import { Card, Deck, DeckPosition, DECK_TYPES } from './deck';
+import { Card, Deck, DeckPosition } from './deck';
 
 export class CardViewProvider implements vscode.WebviewViewProvider {
 
@@ -33,12 +33,14 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
     }
 
     public drawCard() {
-        this._deck.build(DECK_TYPES.standard).shuffle();
+        this._deck.build().shuffle();
         this._currentCard = this._deck.draw(DeckPosition.top, 1)[0];
         this._lastDraw = new Date();
 
         if (Config.pickEvery > 0) {
             this._nextDraw = new Date(this._lastDraw.getTime() + (Config.pickEvery * 1000));
+        } else {
+            this._nextDraw = undefined;
         }
 
         this._updateView();

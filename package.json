@@ -27,6 +27,14 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "Show a badge on the activity bar if a new card is automatically picked."
+        },
+        "zvRandomCards.deckType": {
+          "type": "string",
+          "default": "standard",
+          "enum": [
+            "standard",
+            "training"
+          ]
         }
       }
     },
