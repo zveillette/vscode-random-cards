@@ -3,7 +3,7 @@
   "displayName": "zv-random-cards",
   "description": "VS Code extension to randomly pick cards.",
   "publisher": "zveillette",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -11,7 +11,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:zvRandomCards.draw"
+    "*"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -26,7 +26,12 @@
         "zvRandomCards.enableBadgeNotification": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Show a badge on the activity bar if a new card is automatically picked."
+          "markdownDescription": "Show a badge on the activity bar when a new card is automatically picked."
+        },
+        "zvRandomCards.enableNotification": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Show a notification when a new card is automatically picked."
         },
         "zvRandomCards.deckType": {
           "type": "string",
@@ -35,6 +40,10 @@
             "standard",
             "training"
           ]
+        },
+        "zvRandomCards.nextDraw": {
+          "type": "string",
+          "description": "Next draw timestamp."
         }
       }
     },

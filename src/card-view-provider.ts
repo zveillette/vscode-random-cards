@@ -11,7 +11,7 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
     private _currentCard?: Card;
 
     constructor(private readonly _extensionUri: vscode.Uri, private _deck: Deck) {
-        this._nextDrawInterval = setInterval(() => {
+        this._nextDrawInterval = setInterval(async () => {
             if (!Config.nextDraw || new Date() <= Config.nextDraw) {
                 return;
             }
@@ -24,10 +24,10 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
             }
             
             if (Config.isNotificationEnabled) {
-                vscode.window.showInformationMessage('You have a new card !');
+                vscode.window.showInformationMessage(`You have a new card ! (${new Date().toLocaleTimeString()})`);
             }
 
-            this.drawCard();
+            await this.drawCard();
         }, 5000);
     }
 
