@@ -3,7 +3,7 @@
   "displayName": "zv-random-cards",
   "description": "VS Code extension to randomly pick cards.",
   "publisher": "zveillette",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.74.0"
   },
