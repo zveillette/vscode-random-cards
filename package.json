@@ -3,7 +3,10 @@
   "displayName": "zv-random-cards",
   "description": "VS Code extension to randomly pick cards.",
   "publisher": "zveillette",
-  "version": "0.0.6",
+  "repository": {
+    "url": "https://github.com/zveillette/vscode-random-cards"
+  },
+  "version": "0.0.7",
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -40,10 +43,6 @@
             "standard",
             "training"
           ]
-        },
-        "zvRandomCards.nextDraw": {
-          "type": "string",
-          "description": "Next draw timestamp."
         }
       }
     },
