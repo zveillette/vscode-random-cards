@@ -69,11 +69,7 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
         const pile = this._state.getCardPile();
         pile.pop();
         this._currentCard = pile[pile.length - 1];
-        if (pile.length === 1) {
-            this._state.setCardPile([]);
-        } else {
-            this._state.setCardPile(pile);
-        }
+        this._state.setCardPile(pile);
 
         this._updateView();
     }
