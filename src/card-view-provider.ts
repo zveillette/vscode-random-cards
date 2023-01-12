@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { Config } from './config';
 import { Card, Deck, DeckPosition } from './deck';
+import { WorkspaceState } from './workspace-state';
 
 export class CardViewProvider implements vscode.WebviewViewProvider {
 
@@ -10,9 +11,9 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
     private _nextDrawInterval?: NodeJS.Timer;
     private _currentCard?: Card;
 
-    constructor(private readonly _extensionUri: vscode.Uri, private _deck: Deck) {
+    constructor(private readonly _state: WorkspaceState, private readonly _extensionUri: vscode.Uri, private _deck: Deck) {
         this._nextDrawInterval = setInterval(async () => {
-            if (!Config.nextDraw || new Date() <= Config.nextDraw) {
+            if (!this._state.getNextDraw() || new Date() <= (this._state.getNextDraw() || 0)) {
                 return;
             }
 
@@ -41,9 +42,9 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
         this._lastDraw = new Date();
 
         if (Config.pickEvery > 0) {
-            await Config.setNextDraw(new Date(this._lastDraw.getTime() + (Config.pickEvery * 1000)));
+            await this._state.setNextDraw(new Date(this._lastDraw.getTime() + (Config.pickEvery * 1000)));
         } else {
-            await Config.setNextDraw(null);
+            await this._state.setNextDraw(null);
         }
 
         this._updateView();
@@ -96,7 +97,7 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
 			</head>
 			<body>
             <div class="container">
-            ${!Config.nextDraw && !this._currentCard ?
+            ${!this._state.getNextDraw() && !this._currentCard ?
                 `Get started by drawing a card!` : ''
             }
 
@@ -113,10 +114,10 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
                 ` : ''
             }
 
-            ${Config.nextDraw ? `
+            ${this._state.getNextDraw() ? `
                 <div class="info-text">
                     <div>Next card will be picked at:</div>
-                    <div>${Config.nextDraw?.toLocaleString()}</div>
+                    <div>${this._state.getNextDraw()?.toLocaleString()}</div>
                 </div>
                 `: ''
             }

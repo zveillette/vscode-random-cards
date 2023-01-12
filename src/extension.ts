@@ -3,6 +3,7 @@ import { CardViewProvider } from './card-view-provider';
 import { Config, ConfigKeys, CONFIG_NAME } from './config';
 import { Deck } from './deck';
 import { DeckType } from './deck-type';
+import { WorkspaceState } from './workspace-state';
 
 export function activate(context: vscode.ExtensionContext) {
 	const deckTypes = {
@@ -52,8 +53,9 @@ export function activate(context: vscode.ExtensionContext) {
 		deckType = 'standard';
 	}
 
+	const state = new WorkspaceState(context);
 	const deck = new Deck(deckTypes[deckType]);
-	const provider = new CardViewProvider(context.extensionUri, deck);
+	const provider = new CardViewProvider(state, context.extensionUri, deck);
 	
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(CardViewProvider.viewType, provider),
