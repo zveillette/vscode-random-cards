@@ -7,7 +7,8 @@ export enum ConfigKeys {
     enableBadgeNotification = 'enableBadgeNotification',
     deckType = 'deckType',
     nextDraw = 'nextDraw',
-    enableNotification = 'enableNotification'
+    enableNotification = 'enableNotification',
+    pileUp = 'pileUp'
 }
 
 export class Config {
@@ -25,5 +26,9 @@ export class Config {
 
     static get deckType(): string {
         return String(vscode.workspace.getConfiguration(CONFIG_NAME).get(ConfigKeys.deckType));
+    }
+
+    static get pileUp(): boolean {
+        return Boolean(vscode.workspace.getConfiguration(CONFIG_NAME).get(ConfigKeys.pileUp));
     }
 }

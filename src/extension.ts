@@ -56,12 +56,18 @@ export function activate(context: vscode.ExtensionContext) {
 	const state = new WorkspaceState(context);
 	const deck = new Deck(deckTypes[deckType]);
 	const provider = new CardViewProvider(state, context.extensionUri, deck);
-	
+
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(CardViewProvider.viewType, provider),
 		new vscode.Disposable(() => provider.dispose()),
 		vscode.commands.registerCommand('zvRandomCards.draw', async () => {
 			await provider.drawCard();
+		}),
+		vscode.commands.registerCommand('zvRandomCards.acknowledge', async () => {
+			await provider.acknowledge();
+		}),
+		vscode.commands.registerCommand('zvRandomCards.resetPile', async () => {
+			await provider.acknowledge(true);
 		}),
 		vscode.workspace.onDidChangeConfiguration((e) => {
 			if (!e.affectsConfiguration(`${CONFIG_NAME}.${ConfigKeys.deckType}`)) {
@@ -78,6 +84,4 @@ export function activate(context: vscode.ExtensionContext) {
 
 }
 
-export function deactivate() {
-
-}
+export function deactivate() { }

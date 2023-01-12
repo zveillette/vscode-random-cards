@@ -6,7 +6,7 @@
   "repository": {
     "url": "https://github.com/zveillette/vscode-random-cards"
   },
-  "version": "0.0.7",
+  "version": "0.0.8",
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -43,6 +43,11 @@
             "standard",
             "training"
           ]
+        },
+        "zvRandomCards.pileUp": {
+          "type": "boolean",
+          "default": false,
+          "description": "Cards will pile up until they are acknowledge by the user."
         }
       }
     },
@@ -52,6 +57,18 @@
         "title": "Draw a card",
         "category": "Random cards",
         "icon": "$(discard)"
+      },
+      {
+        "command": "zvRandomCards.acknowledge",
+        "title": "Acknowledge card",
+        "category": "Random cards",
+        "icon": "$(eye-watch)"
+      },
+      {
+        "command": "zvRandomCards.resetPile",
+        "title": "Reset card pile",
+        "category": "Random cards",
+        "icon": "$(refresh)"
       }
     ],
     "viewsContainers": {
@@ -77,6 +94,16 @@
         {
           "command": "zvRandomCards.draw",
           "when": "view == zvRandomCards.cardView",
+          "group": "navigation"
+        },
+        {
+          "command": "zvRandomCards.acknowledge",
+          "when": "view == zvRandomCards.cardView && config.zvRandomCards.pileUp",
+          "group": "navigation"
+        },
+        {
+          "command": "zvRandomCards.resetPile",
+          "when": "view == zvRandomCards.cardView && config.zvRandomCards.pileUp",
           "group": "navigation"
         }
       ]
