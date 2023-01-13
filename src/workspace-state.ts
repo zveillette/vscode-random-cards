@@ -1,9 +1,11 @@
 import * as vscode from 'vscode';
+import { Card } from './deck';
 
 export const CONFIG_NAME = 'zvRandomCards';
 
 export enum WorkspaceStateKeys {
-    nextDraw = 'nextDraw'
+    nextDraw = 'nextDraw',
+    cardPile = 'cardPile'
 }
 
 export class WorkspaceState {
@@ -19,5 +21,13 @@ export class WorkspaceState {
 
     public async setNextDraw(value: Date | null) {
         await this._context.workspaceState.update(WorkspaceStateKeys.nextDraw, value);
+    }
+
+    public getCardPile(): Card[] {
+        return (this._context.workspaceState.get(WorkspaceStateKeys.cardPile) || []) as Card[];
+    }
+
+    public async setCardPile(value: Card[]) {
+        await this._context.workspaceState.update(WorkspaceStateKeys.cardPile, value);
     }
 }

@@ -47,6 +47,30 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
             await this._state.setNextDraw(null);
         }
 
+        if (Config.pileUp) {
+            const pile = this._state.getCardPile();
+            pile.push(this._currentCard);
+            this._state.setCardPile(pile);
+        } else {
+            this._state.setCardPile([]);
+        }
+
+        this._updateView();
+    }
+
+    public async acknowledge(all?: boolean) {
+        if (all) {
+            this._state.setCardPile([]);
+            this._currentCard = undefined;
+            this._updateView();
+            return;
+        }
+
+        const pile = this._state.getCardPile();
+        pile.pop();
+        this._currentCard = pile[pile.length - 1];
+        this._state.setCardPile(pile);
+
         this._updateView();
     }
 
@@ -65,6 +89,11 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
                 this._view.badge = { tooltip: '', value: 0 };
             }
         }, this);
+
+        const pile = this._state.getCardPile();
+        if (pile.length > 0) {
+            this.acknowledge();
+        }
 
         this._updateView();
     }
@@ -118,6 +147,14 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
                 <div class="info-text">
                     <div>Next card will be picked at:</div>
                     <div>${this._state.getNextDraw()?.toLocaleString()}</div>
+                </div>
+                `: ''
+            }
+
+            ${this._state.getCardPile().length > 0 ? `
+                <div class="info-text">
+                    <div>Pile:</div>
+                    <div>${this._state.getCardPile().length}</div>
                 </div>
                 `: ''
             }
