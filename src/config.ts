@@ -10,7 +10,8 @@ export enum ConfigKeys {
     enableNotification = 'enableNotification',
     pileUp = 'pileUp',
     difficultyLevel = 'difficultyLevel',
-    aggregatePile = 'aggregatePile'
+    aggregatePile = 'aggregatePile',
+    useWeight = 'useWeight'
 }
 
 export class Config {
@@ -36,6 +37,10 @@ export class Config {
 
     static get pileUp(): boolean {
         return Boolean(Config.getConfigValue(ConfigKeys.pileUp));
+    }
+
+    static get useWeight(): boolean {
+        return Boolean(Config.getConfigValue(ConfigKeys.useWeight));
     }
 
     static get aggregatePile(): boolean {

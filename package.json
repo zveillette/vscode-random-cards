@@ -49,6 +49,11 @@
           "default": false,
           "description": "Cards will pile up until they are acknowledge by the user."
         },
+        "zvRandomCards.useWeight": {
+          "type": "boolean",
+          "default": false,
+          "description": "The pile will be shown aggregated and the acknowledgment will acknowledge the whole pile"
+        },
         "zvRandomCards.aggregatePile": {
           "type": "boolean",
           "default": false,

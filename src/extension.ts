@@ -43,7 +43,12 @@ export function activate(context: vscode.ExtensionContext) {
 				{ name: 'Queen', points: 10 },
 				{ name: 'King', points: 10 },
 			],
-			[{ name: 'Jumping Jacks' }, { name: 'Squats' }, { name: 'Push-ups' }, { name: 'Sit-ups' }]
+			[
+				{ name: 'Jumping Jacks', weight: 2 },
+				{ name: 'Sit-ups', weight: 2 },
+				{ name: 'Squats', weight: 1.5 },
+				{ name: 'Push-ups', weight: 1 },
+			]
 		)
 	} as { [name: string]: DeckType };
 
@@ -64,6 +69,11 @@ export function activate(context: vscode.ExtensionContext) {
 			await provider.drawCard();
 		}),
 		vscode.commands.registerCommand('zvRandomCards.acknowledge', async () => {
+			if(Config.aggregatePile) {
+				await provider.acknowledge(true);
+				return;
+			}
+
 			await provider.acknowledge();
 		}),
 		vscode.commands.registerCommand('zvRandomCards.resetPile', async () => {

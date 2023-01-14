@@ -4,6 +4,7 @@
 
 - New setting `difficultyLevel`
 - New setting `aggregatePile`
+- New settings `useWeight`
 
 ## 0.0.8
 

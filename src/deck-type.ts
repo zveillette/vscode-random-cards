@@ -40,6 +40,7 @@ interface DeckTypeJson {
     cards: Card[],
     cardTypes: {
         name: string,
+        weight?: number;
         icon?: string
     }[]
 }
