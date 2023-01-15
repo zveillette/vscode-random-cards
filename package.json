@@ -48,6 +48,21 @@
           "type": "boolean",
           "default": false,
           "description": "Cards will pile up until they are acknowledge by the user."
+        },
+        "zvRandomCards.useWeight": {
+          "type": "boolean",
+          "default": false,
+          "description": "A weight is assigned to all card types from 1 to 2. This weight will multiple the total points of the card."
+        },
+        "zvRandomCards.aggregatePile": {
+          "type": "boolean",
+          "default": false,
+          "description": "The pile will be shown aggregated and the acknowledgment will acknowledge the whole pile"
+        },
+        "zvRandomCards.difficultyLevel": {
+          "type": "number",
+          "default": 1,
+          "description": "A factor from which the result is multiplied with. Can be from 1 to 5"
         }
       }
     },
@@ -103,7 +118,7 @@
         },
         {
           "command": "zvRandomCards.resetPile",
-          "when": "view == zvRandomCards.cardView && config.zvRandomCards.pileUp",
+          "when": "view == zvRandomCards.cardView && config.zvRandomCards.pileUp && !config.zvRandomCards.aggregatePile",
           "group": "navigation"
         }
       ]

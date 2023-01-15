@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import CardView from './components/CardView';
 import { Config } from './config';
 import { Card, Deck, DeckPosition } from './deck';
 import { WorkspaceState } from './workspace-state';
@@ -131,10 +132,8 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
             }
 
             ${this._currentCard ? `
-                <div class="card">
-                    <div class="card-title">
-                    ${this._currentCard.cardType?.name}: ${this._currentCard.name}
-                    </div>
+                <div class="card-container">
+                    ${CardView({ currentCard: this._currentCard, pile: this._state.getCardPile() })}
                 </div>
                 <div class="info-text">
                     <div>Last card picked at:</div>

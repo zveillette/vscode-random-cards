@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.9
+
+- New setting `difficultyLevel`
+- New setting `aggregatePile`
+- New settings `useWeight`
+
 ## 0.0.8
 
 - Added card piling system. Card accumulates until the user acknowledge them,

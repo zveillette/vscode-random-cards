@@ -80,5 +80,6 @@ export interface Card {
 
 export interface CardType {
     name: string,
+    weight?: number
     icon?: string
 }
