@@ -52,7 +52,7 @@
         "zvRandomCards.useWeight": {
           "type": "boolean",
           "default": false,
-          "description": "The pile will be shown aggregated and the acknowledgment will acknowledge the whole pile"
+          "description": "A weight is assigned to all card types from 1 to 2. This weight will multiple the total points of the card."
         },
         "zvRandomCards.aggregatePile": {
           "type": "boolean",
@@ -118,7 +118,7 @@
         },
         {
           "command": "zvRandomCards.resetPile",
-          "when": "view == zvRandomCards.cardView && config.zvRandomCards.pileUp",
+          "when": "view == zvRandomCards.cardView && config.zvRandomCards.pileUp && !config.zvRandomCards.aggregatePile",
           "group": "navigation"
         }
       ]
