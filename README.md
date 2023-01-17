@@ -17,17 +17,13 @@ Use the following format to create your deck. Note that a card will be created f
 ```json
 [{
     "name": "my deck",
-    "cards": [
-        {
-            "name": "my card",
-            "points": 1
-        }
-    ],
+    "cards": [{
+        "name": "my card",
+        "points": 1
+    }],
     "cardTypes": [{
-        {
-            "name": "my card type",
-            "weight": 2
-        }
+        "name": "my card type",
+        "weight": 2
     }]
 }]
 ```
