@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.10
+
+- Customize your deck with the new setting `customDecks`
+
 ## 0.0.9
 
 - New setting `difficultyLevel`

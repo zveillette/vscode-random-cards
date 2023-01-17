@@ -1,77 +1,48 @@
 import * as vscode from 'vscode';
 import { CardViewProvider } from './card-view-provider';
-import { Config, ConfigKeys, CONFIG_NAME } from './config';
-import { Deck } from './deck';
-import { DeckType } from './deck-type';
-import { WorkspaceState } from './workspace-state';
+import { Config, ConfigKeys, CONFIG_NAME } from './state/config';
+import { Deck } from './deck/deck';
+import { WorkspaceState } from './state/workspace-state';
+import { getDeckTypes } from './deck/deck-types';
+
+const DEFAULT_DECK = 'standard';
 
 export function activate(context: vscode.ExtensionContext) {
-    const deckTypes = {
-        standard: new DeckType().build(
-            'Standard',
-            [
-                { name: 'Ace', points: 11 },
-                { name: '2', points: 2 },
-                { name: '3', points: 3 },
-                { name: '4', points: 4 },
-                { name: '5', points: 5 },
-                { name: '6', points: 6 },
-                { name: '7', points: 7 },
-                { name: '8', points: 8 },
-                { name: '9', points: 9 },
-                { name: '10', points: 10 },
-                { name: 'Jack', points: 10 },
-                { name: 'Queen', points: 10 },
-                { name: 'King', points: 10 },
-            ],
-            [{ name: 'Clubs' }, { name: 'Diamonds' }, { name: 'Hearts' }, { name: 'Spades' }]
-        ),
-        training: new DeckType().build(
-            'Training',
-            [
-                { name: 'Ace', points: 11 },
-                { name: '2', points: 2 },
-                { name: '3', points: 3 },
-                { name: '4', points: 4 },
-                { name: '5', points: 5 },
-                { name: '6', points: 6 },
-                { name: '7', points: 7 },
-                { name: '8', points: 8 },
-                { name: '9', points: 9 },
-                { name: '10', points: 10 },
-                { name: 'Jack', points: 10 },
-                { name: 'Queen', points: 10 },
-                { name: 'King', points: 10 },
-            ],
-            [
-                { name: 'Jumping Jacks', weight: 2 },
-                { name: 'Sit-ups', weight: 2 },
-                { name: 'Squats', weight: 1.5 },
-                { name: 'Push-ups', weight: 1 },
-            ]
-        )
-    } as { [name: string]: DeckType };
-
-    let deckType = Config.deckType;
-    if (!deckType) {
-        vscode.window.showWarningMessage(`Invalid deck type ${Config.deckType}`);
-        deckType = 'standard';
-    }
-
+    const config = new Config();
     const state = new WorkspaceState(context);
+
+    let deckTypes = getDeckTypes(config);
+    let deckType = config.deckType;
+    if (!deckTypes[deckType]) {
+        deckType = DEFAULT_DECK;
+    }
     const deck = new Deck(deckTypes[deckType]);
-    const provider = new CardViewProvider(state, context.extensionUri, deck);
+    const provider = new CardViewProvider(config, state, context.extensionUri, deck);
 
     const onPileUpChange = () => {
-        if(!Config.pileUp) {
+        if (!config.pileUp) {
             vscode.workspace.getConfiguration(CONFIG_NAME).update(ConfigKeys.aggregatePile, false, vscode.ConfigurationTarget.Global);
         }
     };
 
     const onAggregatePileChange = () => {
-        if(Config.aggregatePile) {
+        if (config.aggregatePile) {
             vscode.workspace.getConfiguration(CONFIG_NAME).update(ConfigKeys.pileUp, true, vscode.ConfigurationTarget.Global);
         }
+    };
+
+    const onDeckTypeChange = () => {
+        deckTypes = getDeckTypes(config);
+
+        if (!deckTypes[config.deckType]) {
+            vscode.window.showWarningMessage(`Invalid deck type ${config.deckType}`);
+        }
+
+        deck.deckType = deckTypes[config.deckType];
+    };
+
+    const onCustomDecksChange = () => {
+        deckTypes = getDeckTypes(config);
     };
 
     context.subscriptions.push(
@@ -81,7 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
             await provider.drawCard();
         }),
         vscode.commands.registerCommand('zvRandomCards.acknowledge', async () => {
-            if(Config.aggregatePile) {
+            if (config.aggregatePile) {
                 await provider.acknowledge(true);
                 return;
             }
@@ -102,18 +73,17 @@ export function activate(context: vscode.ExtensionContext) {
                 return;
             }
 
-            if (!e.affectsConfiguration(`${CONFIG_NAME}.${ConfigKeys.deckType}`)) {
+            if (e.affectsConfiguration(`${CONFIG_NAME}.${ConfigKeys.deckType}`)) {
+                onDeckTypeChange();
                 return;
             }
 
-            if (!deckTypes[Config.deckType]) {
-                vscode.window.showWarningMessage(`Invalid deck type ${Config.deckType}`);
+            if (e.affectsConfiguration(`${CONFIG_NAME}.${ConfigKeys.customDecks}`)) {
+                onCustomDecksChange();
+                return;
             }
-
-            deck.deckType = deckTypes[Config.deckType];
         })
     );
-
 }
 
 export function deactivate() { }

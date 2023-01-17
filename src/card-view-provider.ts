@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import CardView from './components/CardView';
-import { Config } from './config';
-import { Card, Deck, DeckPosition } from './deck';
-import { WorkspaceState } from './workspace-state';
+import { Config } from './state/config';
+import { Card, Deck, DeckPosition } from './deck/deck';
+import { WorkspaceState } from './state/workspace-state';
 
 export class CardViewProvider implements vscode.WebviewViewProvider {
 
@@ -12,20 +12,20 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
     private _nextDrawInterval?: NodeJS.Timer;
     private _currentCard?: Card;
 
-    constructor(private readonly _state: WorkspaceState, private readonly _extensionUri: vscode.Uri, private _deck: Deck) {
+    constructor(private readonly _config: Config, private readonly _state: WorkspaceState, private readonly _extensionUri: vscode.Uri, private _deck: Deck) {
         this._nextDrawInterval = setInterval(async () => {
             if (!this._state.getNextDraw() || new Date() <= (this._state.getNextDraw() || 0)) {
                 return;
             }
 
-            if (this._view && !this._view.visible && Config.isBadgeNotificationEnabled) {
+            if (this._view && !this._view.visible && this._config.isBadgeNotificationEnabled) {
                 this._view.badge = {
                     tooltip: 'New card !',
                     value: 1
                 };
             }
             
-            if (Config.isNotificationEnabled) {
+            if (this._config.isNotificationEnabled) {
                 vscode.window.showInformationMessage(`You have a new card ! (${new Date().toLocaleTimeString()})`);
             }
 
@@ -42,13 +42,13 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
         this._currentCard = this._deck.draw(DeckPosition.top, 1)[0];
         this._lastDraw = new Date();
 
-        if (Config.pickEvery > 0) {
-            await this._state.setNextDraw(new Date(this._lastDraw.getTime() + (Config.pickEvery * 1000)));
+        if (this._config.pickEvery > 0) {
+            await this._state.setNextDraw(new Date(this._lastDraw.getTime() + (this._config.pickEvery * 1000)));
         } else {
             await this._state.setNextDraw(null);
         }
 
-        if (Config.pileUp) {
+        if (this._config.pileUp) {
             const pile = this._state.getCardPile();
             pile.push(this._currentCard);
             this._state.setCardPile(pile);
@@ -133,7 +133,7 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
 
             ${this._currentCard ? `
                 <div class="card-container">
-                    ${CardView({ currentCard: this._currentCard, pile: this._state.getCardPile() })}
+                    ${CardView(this._config, { currentCard: this._currentCard, pile: this._state.getCardPile() })}
                 </div>
                 <div class="info-text">
                     <div>Last card picked at:</div>

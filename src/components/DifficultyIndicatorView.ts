@@ -1,7 +1,7 @@
-import { Config } from '../config';
+import { Config } from '../state/config';
 
-export default () => {
-    const difficultyLevel = Config.difficultyLevel;
+export default (config: Config) => {
+    const difficultyLevel = config.difficultyLevel;
     let icon;
     switch(difficultyLevel) {
         case 1:
@@ -21,6 +21,6 @@ export default () => {
         break;
     }
     return `
-        <p class="difficulty-indicator">Difficulty: ${Config.difficultyLevel} ${icon}</p>
+        <p class="difficulty-indicator">Difficulty: ${config.difficultyLevel} ${icon}</p>
     `;
 };
