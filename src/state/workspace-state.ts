@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Card } from './deck';
+import { Card } from '../deck/deck';
 
 export const CONFIG_NAME = 'zvRandomCards';
 

@@ -1,5 +1,5 @@
-import { Card } from "../deck";
-import { Config } from '../config';
+import { Card } from "../deck/deck";
+import { Config } from '../state/config';
 import DifficultyIndicatorView from "./DifficultyIndicatorView";
 
 type Props = {
@@ -7,18 +7,18 @@ type Props = {
     pile: Card[];
 };
 
-const calculateAmount = (amount: number, weight: number = 1) => {
-    if(Config.useWeight) {
-        return Math.ceil(amount * weight * Config.difficultyLevel);
+const calculateAmount = (useWeight: boolean, difficultyLevel: number, amount: number, weight: number = 1) => {
+    if(useWeight) {
+        return Math.ceil(amount * weight * difficultyLevel);
     }
 
-  return Math.ceil(amount * Config.difficultyLevel);
+  return Math.ceil(amount * difficultyLevel);
 };
 
-export default (props: Props) => {
+export default (config: Config, props: Props) => {
     const { currentCard, pile } = props;
 
-    if(Config.aggregatePile) {
+    if(config.aggregatePile) {
         const weightByCardTypeName: Record<string, number> = {};
         const aggregatedPile = pile.reduce<Record<string, number>>((accumulator, card) => {
         if(!card.cardType) {
@@ -35,7 +35,7 @@ export default (props: Props) => {
         },{});
 
         return `
-        ${DifficultyIndicatorView()}
+        ${DifficultyIndicatorView(config)}
         ${Object.keys(aggregatedPile).map((cardTypeName) => {
             const amount = aggregatedPile[cardTypeName];
 
@@ -43,8 +43,8 @@ export default (props: Props) => {
             <div class="card">
                 <div class="card-title">
                     ${cardTypeName}
-                    ${Config.useWeight ? ` (x${weightByCardTypeName[cardTypeName]})`: ''}:
-                    ${calculateAmount(amount, weightByCardTypeName[cardTypeName])}
+                    ${config.useWeight ? ` (x${weightByCardTypeName[cardTypeName]})`: ''}:
+                    ${calculateAmount(config.useWeight, config.difficultyLevel, amount, weightByCardTypeName[cardTypeName])}
                 </div>
             </div>
             `;
@@ -53,14 +53,14 @@ export default (props: Props) => {
     }
 
     return `
-        ${DifficultyIndicatorView()}
+        ${DifficultyIndicatorView(config)}
         <div class="card">
         <div class="card-title">
             ${currentCard.cardType?.name}: ${currentCard.name}
         </div>
         <p>
-            Amount ${Config.useWeight ? ` (x${currentCard.cardType?.weight})`: ''}:
-            ${calculateAmount(currentCard.points, currentCard.cardType?.weight)}
+            Amount ${config.useWeight ? ` (x${currentCard.cardType?.weight})`: ''}:
+            ${calculateAmount(config.useWeight, config.difficultyLevel,currentCard.points, currentCard.cardType?.weight)}
         </p>
         </div>
     `;
