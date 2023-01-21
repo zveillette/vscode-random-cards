@@ -1,5 +1,3 @@
-import { Config } from '../state/config';
-
 type Props = {
     difficultyLevel: number
 };
@@ -24,7 +22,7 @@ export default class DifficultyIndicatorView {
         }
     }
 
-    render() {
+    renderHtml() {
         const { difficultyLevel } = this.props;
         return `
             <p class="difficulty-indicator">Difficulty: ${difficultyLevel} ${this.getIcon(difficultyLevel)}</p>

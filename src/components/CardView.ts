@@ -1,13 +1,12 @@
 import { Card } from "../deck/deck";
-import { Config } from '../state/config';
 import DifficultyIndicatorView from "./DifficultyIndicatorView";
 
 type Props = {
-    aggregatePile: boolean,
-    useWeight: boolean,
+    aggregatePile?: boolean,
+    useWeight?: boolean,
     difficultyLevel: number,
-    currentCard: Card;
-    pile: Card[];
+    currentCard?: Card;
+    pile?: Card[];
 };
 
 export default class CardView {
@@ -22,11 +21,12 @@ export default class CardView {
         return Math.ceil(amount * difficultyLevel);
     }
 
-    render(): string {
+    renderHtml(): string {
         const { aggregatePile, useWeight, difficultyLevel, currentCard, pile } = this.props;
+
         if (aggregatePile) {
             const weightByCardTypeName: Record<string, number> = {};
-            const aggregatedPile = pile.reduce<Record<string, number>>((accumulator, card) => {
+            const aggregatedPile = (pile || []).reduce<Record<string, number>>((accumulator, card) => {
                 if (!card.cardType) {
                     return accumulator;
                 }
@@ -41,15 +41,14 @@ export default class CardView {
             }, {});
 
             return `
-            ${new DifficultyIndicatorView({ difficultyLevel }).render()}
+            ${new DifficultyIndicatorView({ difficultyLevel }).renderHtml()}
             ${Object.keys(aggregatedPile).map((cardTypeName) => {
                 const amount = aggregatedPile[cardTypeName];
 
                 return `
                 <div class="card">
                     <div class="card-title">
-                        ${cardTypeName}
-                        ${useWeight ? ` (x${weightByCardTypeName[cardTypeName]})` : ''}:
+                        ${cardTypeName}${useWeight ? ` (x${weightByCardTypeName[cardTypeName]})` : ''}:
                         ${this.calculateAmount(amount, weightByCardTypeName[cardTypeName])}
                     </div>
                 </div>
@@ -58,17 +57,21 @@ export default class CardView {
             `;
         }
 
-        return `
-            ${new DifficultyIndicatorView({ difficultyLevel }).render()}
-            <div class="card">
-            <div class="card-title">
-                ${currentCard.cardType?.name}: ${currentCard.name}
-            </div>
-            <p>
-                Amount ${useWeight ? ` (x${currentCard.cardType?.weight || 1})` : ''}:
-                ${this.calculateAmount(currentCard.points, currentCard.cardType?.weight)}
-            </p>
-            </div>
-        `;
+        if (currentCard) {
+            return `
+                ${new DifficultyIndicatorView({ difficultyLevel }).renderHtml()}
+                <div class="card">
+                    <div class="card-title">
+                        ${currentCard.cardType ? currentCard.cardType.name + ':' : ''} ${currentCard.name}
+                    </div>
+                    <p>
+                        Amount ${useWeight ? `(x${currentCard.cardType?.weight || 1})` : ''}:
+                        ${this.calculateAmount(currentCard.points, currentCard.cardType?.weight)}
+                    </p>
+                </div>
+            `;
+        }
+
+        return '';
     }
 }

@@ -134,7 +134,7 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
 
             ${this._currentCard ? `
                 <div class="card-container">
-                    ${new CardView({ aggregatePile, difficultyLevel, useWeight, currentCard: this._currentCard, pile: this._state.getCardPile() }).render()}
+                    ${new CardView({ aggregatePile, difficultyLevel, useWeight, currentCard: this._currentCard, pile: this._state.getCardPile() }).renderHtml()}
                 </div>
                 ${this._lastDraw ? `
                 <div class="info-text">

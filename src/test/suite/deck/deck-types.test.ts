@@ -1,6 +1,4 @@
 import * as assert from 'assert';
-import { config } from 'process';
-import * as vscode from 'vscode';
 import { DeckTypeJson } from '../../../deck/deck-type';
 import { getDeckTypes } from '../../../deck/deck-types';
 import { Config } from '../../../state/config';
