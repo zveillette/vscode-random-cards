@@ -1,26 +1,33 @@
 import { Config } from '../state/config';
 
-export default (config: Config) => {
-    const difficultyLevel = config.difficultyLevel;
-    let icon;
-    switch(difficultyLevel) {
-        case 1:
-            icon = '😎';
-        break;
-        case 2:
-            icon = '🤠';
-        break;
-        case 3:
-            icon = '😱';
-        break;
-        case 4:
-            icon = '😭';
-        break;
-        case 5:
-            icon = '😵';
-        break;
-    }
-    return `
-        <p class="difficulty-indicator">Difficulty: ${config.difficultyLevel} ${icon}</p>
-    `;
+type Props = {
+    difficultyLevel: number
 };
+
+export default class DifficultyIndicatorView {
+    constructor(public props: Props) { }
+
+    getIcon(level: number) {
+        switch (level) {
+            case 1:
+                return '😎';
+            case 2:
+                return '🤠';
+            case 3:
+                return '😱';
+            case 4:
+                return '😭';
+            case 5:
+                return '😵';
+            default:
+                return '🤡';
+        }
+    }
+
+    render() {
+        const { difficultyLevel } = this.props;
+        return `
+            <p class="difficulty-indicator">Difficulty: ${difficultyLevel} ${this.getIcon(difficultyLevel)}</p>
+        `;
+    }
+}
