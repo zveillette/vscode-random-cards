@@ -3,7 +3,7 @@ import { CardType, Deck, DeckPosition } from '../../../deck/deck';
 import { DeckError, DeckErrorType } from '../../../deck/deck-error';
 import { DeckType } from '../../../deck/deck-type';
 
-suite('Deck', () => {
+describe('Deck', () => {
     let deckOneCardOneType = new DeckType('DeckOneCardOneType',
         [
             { name: 'CardA', points: 1 }
@@ -24,15 +24,15 @@ suite('Deck', () => {
         ]
     );
 
-    suite('Create deck', () => {
+    describe('Create deck', () => {
 
-        test('Create empty deck', () => {
+        it('Create empty deck', () => {
             const deck = new Deck(deckOneCardOneType);
             assert.equal(deck.cards.length, 0, 'Deck should have no cards on init');
             assert.deepStrictEqual(deck.deckType, deckOneCardOneType, 'Deck type instance should be unchanged');
         });
 
-        test('Build deckOneCardOneType', () => {
+        it('Build deckOneCardOneType', () => {
             const deck = new Deck(deckOneCardOneType);
             const deckInstance = deck.build();
 
@@ -45,7 +45,7 @@ suite('Deck', () => {
             assert.deepStrictEqual(card.cardType, { name: 'TypeA' } as CardType, 'Deck card 1 has wrong card type');
         });
 
-        test('Build deckTwoCardsTwoTypes', () => {
+        it('Build deckTwoCardsTwoTypes', () => {
             const deck = new Deck(deckTwoCardsTwoTypes);
             const deckInstance = deck.build();
 
@@ -64,8 +64,8 @@ suite('Deck', () => {
         });
     });
 
-    suite('Draw cards', () => {
-        test('Draw 1 card from the top (deckTwoCardsTwoTypes)', () => {
+    describe('Draw cards', () => {
+        it('Draw 1 card from the top (deckTwoCardsTwoTypes)', () => {
             const deck = new Deck(deckTwoCardsTwoTypes);
             const cards = deck.build().draw(DeckPosition.top, 1);
 
@@ -75,7 +75,7 @@ suite('Deck', () => {
             assert.equal(cards[0].cardType?.name, 'TypeB', 'Wrong card type');
         });
 
-        test('Draw 2 card from the top (deckTwoCardsTwoTypes)', () => {
+        it('Draw 2 card from the top (deckTwoCardsTwoTypes)', () => {
             const deck = new Deck(deckTwoCardsTwoTypes);
             const cards = deck.build().draw(DeckPosition.top, 2);
 
@@ -87,12 +87,12 @@ suite('Deck', () => {
             assert.equal(cards[1].cardType?.name, 'TypeB', 'Wrong card 2 type');
         });
 
-        test('Draw more cards than deck size from the top (deckTwoCardsTwoTypes)', () => {
+        it('Draw more cards than deck size from the top (deckTwoCardsTwoTypes)', () => {
             const deck = new Deck(deckTwoCardsTwoTypes);
             assert.throws(() => deck.build().draw(DeckPosition.top, 5), new DeckError(DeckErrorType.outOfBoundDraw));
         });
 
-        test('Draw 1 card from the bottom (deckTwoCardsTwoTypes)', () => {
+        it('Draw 1 card from the bottom (deckTwoCardsTwoTypes)', () => {
             const deck = new Deck(deckTwoCardsTwoTypes);
             const cards = deck.build().draw(DeckPosition.bottom, 1);
 
@@ -102,7 +102,7 @@ suite('Deck', () => {
             assert.equal(cards[0].cardType?.name, 'TypeA', 'Wrong card type');
         });
 
-        test('Draw 2 card from the bottom (deckTwoCardsTwoTypes)', () => {
+        it('Draw 2 card from the bottom (deckTwoCardsTwoTypes)', () => {
             const deck = new Deck(deckTwoCardsTwoTypes);
             const cards = deck.build().draw(DeckPosition.bottom, 2);
 
@@ -114,14 +114,14 @@ suite('Deck', () => {
             assert.equal(cards[1].cardType?.name, 'TypeA', 'Wrong card 2 type');
         });
 
-        test('Draw more cards than deck size from the bottom (deckTwoCardsTwoTypes)', () => {
+        it('Draw more cards than deck size from the bottom (deckTwoCardsTwoTypes)', () => {
             const deck = new Deck(deckTwoCardsTwoTypes);
             assert.throws(() => deck.build().draw(DeckPosition.bottom, 5), new DeckError(DeckErrorType.outOfBoundDraw));
         });
     });
 
-    suite('Shuffle', () => {
-        test('Suffle deckTwoCardsTwoTypes', () => {
+    describe('Shuffle', () => {
+        it('Suffle deckTwoCardsTwoTypes', () => {
             const deck = new Deck(deckTwoCardsTwoTypes).build();
             assert.doesNotThrow(() => deck.shuffle(), '.shuffle has thrown');
             assert.equal(deck.cards.length, 4, 'Expected amount of cards to not change');
