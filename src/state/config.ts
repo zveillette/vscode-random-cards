@@ -80,6 +80,10 @@ export class Config {
 
     async setPileUp(value: boolean) {
         await this.setConfigValue(ConfigKeys.pileUp, value);
+
+        if (!value) {
+            await this.setConfigValue(ConfigKeys.aggregatePile, value);
+        }
     }
 
     async setUseWeight(value: boolean) {
@@ -88,10 +92,14 @@ export class Config {
 
     async setAggregatePile(value: boolean) {
         await this.setConfigValue(ConfigKeys.aggregatePile, value);
+
+        if (value) {
+            await this.setConfigValue(ConfigKeys.pileUp, value);
+        }
     }
 
     async setDifficultyLevel(value: number) {
-        let difficultyLevel = value;
+        let difficultyLevel = Math.floor(value);
         if (value < 1) {
             difficultyLevel = 1;
         }
