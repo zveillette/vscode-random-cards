@@ -24,7 +24,7 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
                     value: 1
                 };
             }
-            
+
             if (this._config.isNotificationEnabled) {
                 vscode.window.showInformationMessage(`You have a new card ! (${new Date().toLocaleTimeString()})`);
             }
@@ -114,6 +114,7 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
 
     private _getHtml(webview: vscode.Webview) {
         const styles = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'assets', 'styles.css'));
+        const { aggregatePile, difficultyLevel, useWeight } = this._config;
 
         return `
         <!DOCTYPE html>
@@ -133,12 +134,14 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
 
             ${this._currentCard ? `
                 <div class="card-container">
-                    ${CardView(this._config, { currentCard: this._currentCard, pile: this._state.getCardPile() })}
+                    ${new CardView({ aggregatePile, difficultyLevel, useWeight, currentCard: this._currentCard, pile: this._state.getCardPile() }).renderHtml()}
                 </div>
+                ${this._lastDraw ? `
                 <div class="info-text">
                     <div>Last card picked at:</div>
                     <div>${this._lastDraw?.toLocaleString()}</div>
                 </div>
+                ` : ''}
                 ` : ''
             }
 

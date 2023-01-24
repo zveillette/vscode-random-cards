@@ -57,9 +57,57 @@ export class Config {
 
         return difficultyLevel;
     }
-
+    
     get customDecks(): DeckTypeJson[] {
         return this.getConfigValue(ConfigKeys.customDecks) as DeckTypeJson[];
+    }
+
+    async setPickEvery(value: number) {
+        await this.setConfigValue(ConfigKeys.pickEvery, value);
+    }
+
+    async setIsBadgeNotificationEnabled(value: boolean) {
+        await this.setConfigValue(ConfigKeys.enableBadgeNotification, value);
+    }
+
+    async setIsNotificationEnabled(value: boolean) {
+        await this.setConfigValue(ConfigKeys.enableNotification, value);
+    }
+
+    async setDeckType(value: string) {
+        await this.setConfigValue(ConfigKeys.deckType, value);
+    }
+
+    async setPileUp(value: boolean) {
+        await this.setConfigValue(ConfigKeys.pileUp, value);
+    }
+
+    async setUseWeight(value: boolean) {
+        await this.setConfigValue(ConfigKeys.useWeight, value);
+    }
+
+    async setAggregatePile(value: boolean) {
+        await this.setConfigValue(ConfigKeys.aggregatePile, value);
+    }
+
+    async setDifficultyLevel(value: number) {
+        let difficultyLevel = value;
+        if (value < 1) {
+            difficultyLevel = 1;
+        }
+        if (value > 5) {
+            difficultyLevel = 5;
+        }
+
+        await this.setConfigValue(ConfigKeys.difficultyLevel, difficultyLevel);
+    }
+    
+    async setCustomDecks(value: DeckTypeJson[]) {
+        await this.setConfigValue(ConfigKeys.customDecks, value);
+    }
+
+    private async setConfigValue(key: ConfigKeys, value: unknown) {
+        await vscode.workspace.getConfiguration(CONFIG_NAME).update(key, value, vscode.ConfigurationTarget.Global);
     }
 
     private getConfigValue(key: ConfigKeys): unknown {

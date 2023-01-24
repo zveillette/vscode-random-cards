@@ -1,4 +1,5 @@
 import { randomInt } from 'crypto';
+import { DeckError, DeckErrorType } from './deck-error';
 import { DeckType } from './deck-type';
 
 export class Deck {
@@ -6,7 +7,6 @@ export class Deck {
     private _deckType: DeckType;
     constructor(deckType: DeckType) {
         this._deckType = deckType;
-        this.build(this._deckType);
     }
 
     /**
@@ -54,15 +54,15 @@ export class Deck {
      */
     draw(position: DeckPosition, amount: number): Card[] {
         if (this._cards.length < amount) {
-            return [];
+            throw new DeckError(DeckErrorType.outOfBoundDraw);
         }
 
         switch (position) {
             case DeckPosition.bottom:
-                return [this._cards[this._cards.length - 1]];
+                return this._cards.splice(0, amount);
             case DeckPosition.top:
             default:
-                return [this._cards[0]];
+                return this._cards.splice(this._cards.length - amount, this._cards.length).reverse();
         }
     }
 }
