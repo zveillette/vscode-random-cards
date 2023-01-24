@@ -7,7 +7,7 @@ import { getDeckTypes } from './deck/deck-types';
 
 const DEFAULT_DECK = 'standard';
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext): Promise<vscode.ExtensionContext> {
     const config = new Config();
     const state = new WorkspaceState(context);
 
@@ -72,6 +72,8 @@ export function activate(context: vscode.ExtensionContext) {
             }
         })
     );
+
+    return context;
 }
 
 export function deactivate() { }
