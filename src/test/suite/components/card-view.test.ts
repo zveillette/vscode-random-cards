@@ -10,8 +10,8 @@ describe('CardView', () => {
             const cardView = new CardView({ difficultyLevel: 1, currentCard });
             const cardHtml = cardView.renderHtml();
 
-            assert.equal(getNames(cardHtml)[0], 'CardA', 'Name is not displayed');
-            assert.match(getAmount(cardHtml), /^Amount :( )+?1$/, 'Wrong card points');
+            assert.strictEqual(getNames(cardHtml)[0], 'CardA', 'Name is not displayed');
+            assert.strictEqual(getPoints(cardHtml), '1', 'Wrong card points');
         });
 
         it('With card type', () => {
@@ -19,8 +19,8 @@ describe('CardView', () => {
             const cardView = new CardView({ difficultyLevel: 1, currentCard });
             const cardHtml = cardView.renderHtml();
 
-            assert.equal(getNames(cardHtml)[0], 'TypeA: CardA', 'Wrong name displayed');
-            assert.match(getAmount(cardHtml), /^Amount :( )+?1$/, 'Wrong card amount displayed');
+            assert.strictEqual(getNames(cardHtml)[0], 'TypeA: CardA', 'Wrong name displayed');
+            assert.strictEqual(getPoints(cardHtml), '1', 'Wrong card points');
         });
 
         it('Using weight', () => {
@@ -28,35 +28,35 @@ describe('CardView', () => {
             const cardView = new CardView({ useWeight: true, difficultyLevel: 1, currentCard });
             const cardHtml = cardView.renderHtml();
 
-            assert.equal(getNames(cardHtml)[0], 'TypeA: CardA', 'Wrong name displayed');
-            assert.match(getAmount(cardHtml), /^Amount \(x1\):( )+?1$/, 'Wrong card amount displayed');
+            assert.strictEqual(getNames(cardHtml)[0], 'TypeA: CardA <span class="card-weight">(x1)</span>', 'Wrong name displayed');
+            assert.strictEqual(getPoints(cardHtml), '1', 'Wrong card points');
         });
 
         it('Check weight calculation', () => {
             let currentCard = { name: 'CardA', points: 12, cardType: { name: 'TypeA', weight: 2 } } as Card;
             let cardView = new CardView({ useWeight: true, difficultyLevel: 1, currentCard });
-            assert.match(getAmount(cardView.renderHtml()), /^Amount \(x2\):( )+?24$/, 'Wrong card amount displayed (expecting 24)');
+            assert.strictEqual(getPoints(cardView.renderHtml()), '24', 'Wrong card points');
 
             currentCard = { name: 'CardA', points: 5, cardType: { name: 'TypeA', weight: 0.2635 } } as Card;
             cardView = new CardView({ useWeight: true, difficultyLevel: 1, currentCard });
-            assert.match(getAmount(cardView.renderHtml()), /^Amount \(x0.2635\):( )+?2$/, 'Wrong card amount displayed (expecting 2 calculates to 1.3175)');
+            assert.strictEqual(getPoints(cardView.renderHtml()), '2', 'Wrong card points');
         });
 
         it('Check weight calculation with difficulty', () => {
             let currentCard = { name: 'CardA', points: 12, cardType: { name: 'TypeA', weight: 2 } } as Card;
             let cardView = new CardView({ useWeight: true, difficultyLevel: 3, currentCard });
-            assert.match(getAmount(cardView.renderHtml()), /^Amount \(x2\):( )+?72$/, 'Wrong card amount displayed (expecting 72)');
+            assert.strictEqual(getPoints(cardView.renderHtml()), '72', 'Wrong card points');
 
             currentCard = { name: 'CardA', points: 5, cardType: { name: 'TypeA', weight: 0.2635 } } as Card;
             cardView = new CardView({ useWeight: true, difficultyLevel: 2, currentCard });
-            assert.match(getAmount(cardView.renderHtml()), /^Amount \(x0.2635\):( )+?3$/, 'Wrong card amount displayed (expecting 3 calculates to 1.3175)');
+            assert.strictEqual(getPoints(cardView.renderHtml()), '3', 'Wrong card points');
         });
 
         it('Check that difficulty is displayed', () => {
             const currentCard = { name: 'CardA', points: 1 } as Card;
             const cardView = new CardView({ difficultyLevel: 3, currentCard });
             const difficulty = getDifficulty(cardView.renderHtml());
-            assert.equal(difficulty, 'Difficulty: 3 😱', 'Difficulty should be displayed');
+            assert.strictEqual(difficulty, 'Difficulty: 3 😱', 'Difficulty should be displayed');
         });
     });
 
@@ -64,7 +64,7 @@ describe('CardView', () => {
         it('Empty pile', () => {
             const pile: Card[] = [];
             const cardView = new CardView({ aggregatePile: true, difficultyLevel: 1, pile });
-            assert.equal(getNames(cardView.renderHtml()).length, 0, 'Nothing should be displayed');
+            assert.strictEqual(getNames(cardView.renderHtml()).length, 0, 'Nothing should be displayed');
         });
 
         it('Same card types in the pile', () => {
@@ -75,8 +75,8 @@ describe('CardView', () => {
             const cardView = new CardView({ aggregatePile: true, difficultyLevel: 1, pile });
             const names = getNames(cardView.renderHtml());
 
-            assert.equal(names.length, 1, 'Wrong amount of names displayed');
-            assert.match(names[0], /^TypeA:( )+?6$/, 'Wrong amount displayed');
+            assert.strictEqual(names.length, 1, 'Wrong amount of names displayed');
+            assert.strictEqual(names[0], 'TypeA: 6', 'Wrong points displayed');
         });
 
         it('Different card types in the pile', () => {
@@ -87,9 +87,9 @@ describe('CardView', () => {
             const cardView = new CardView({ aggregatePile: true, difficultyLevel: 1, pile });
             const names = getNames(cardView.renderHtml());
 
-            assert.equal(names.length, 2, 'Wrong amount of names displayed');
-            assert.match(names[0], /^TypeA:( )+?1$/, 'Wrong amount displayed TypeA');
-            assert.match(names[1], /^TypeB:( )+?5$/, 'Wrong amount displayed TypeB');
+            assert.strictEqual(names.length, 2, 'Wrong amount of names displayed');
+            assert.strictEqual(names[0], 'TypeA: 1', 'Wrong points displayed');
+            assert.strictEqual(names[1], 'TypeB: 5', 'Wrong points displayed');
         });
 
         it('Different card types and aggregation', () => {
@@ -102,9 +102,9 @@ describe('CardView', () => {
             const cardView = new CardView({ aggregatePile: true, difficultyLevel: 1, pile });
             const names = getNames(cardView.renderHtml());
 
-            assert.equal(names.length, 2, 'Wrong amount of names displayed');
-            assert.match(names[0], /^TypeA:( )+?6$/, 'Wrong amount displayed TypeA');
-            assert.match(names[1], /^TypeB:( )+?6$/, 'Wrong amount displayed TypeB');
+            assert.strictEqual(names.length, 2, 'Wrong amount of names displayed');
+            assert.strictEqual(names[0], 'TypeA: 6', 'Wrong points displayed');
+            assert.strictEqual(names[1], 'TypeB: 6', 'Wrong points displayed');
         });
 
         it('Check weight calculation with different card types and aggregation', () => {
@@ -117,9 +117,9 @@ describe('CardView', () => {
             const cardView = new CardView({ aggregatePile: true, useWeight: true, difficultyLevel: 1, pile });
             const names = getNames(cardView.renderHtml());
 
-            assert.equal(names.length, 2, 'Wrong amount of names displayed');
-            assert.match(names[0], /^TypeA \(x1\):( )+?6$/, 'Wrong amount displayed TypeA');
-            assert.match(names[1], /^TypeB \(x2\):( )+?12$/, 'Wrong amount displayed TypeB');
+            assert.strictEqual(names.length, 2, 'Wrong amount of names displayed');
+            assert.strictEqual(names[0], 'TypeA <span class="card-weight">(x1)</span>: 6', 'Wrong points displayed');
+            assert.strictEqual(names[1], 'TypeB <span class="card-weight">(x2)</span>: 12', 'Wrong points displayed');
         });
 
         it('Check weight calculation with different card types and aggregation and difficulty', () => {
@@ -132,9 +132,9 @@ describe('CardView', () => {
             const cardView = new CardView({ aggregatePile: true, useWeight: true, difficultyLevel: 3, pile });
             const names = getNames(cardView.renderHtml());
 
-            assert.equal(names.length, 2, 'Wrong amount of names displayed');
-            assert.match(names[0], /^TypeA \(x1\):( )+?18$/, 'Wrong amount displayed TypeA');
-            assert.match(names[1], /^TypeB \(x2\):( )+?36$/, 'Wrong amount displayed TypeB');
+            assert.strictEqual(names.length, 2, 'Wrong amount of names displayed');
+            assert.strictEqual(names[0], 'TypeA <span class="card-weight">(x1)</span>: 18', 'Wrong points displayed');
+            assert.strictEqual(names[1], 'TypeB <span class="card-weight">(x2)</span>: 36', 'Wrong points displayed');
         });
 
         it('Check that difficulty is displayed', () => {
@@ -146,7 +146,7 @@ describe('CardView', () => {
             ];
             const cardView = new CardView({ aggregatePile: true, useWeight: true, difficultyLevel: 3, pile });
             const difficulty = getDifficulty(cardView.renderHtml());
-            assert.equal(difficulty, 'Difficulty: 3 😱', 'Difficulty should be displayed');
+            assert.strictEqual(difficulty, 'Difficulty: 3 😱', 'Difficulty should be displayed');
         });
     });
 });
@@ -171,8 +171,8 @@ function getNames(html: string): string[] {
     return cardNames;
 }
 
-function getAmount(html: string) {
-    const matches = /<p>([\s\S]+?)<\/p>/gi.exec(html);
+function getPoints(html: string) {
+    const matches = /<div class="card-pts">([\s\S]+?)<\/div>/gi.exec(html);
     if (!matches || matches?.length < 2) {
         return '';
     }

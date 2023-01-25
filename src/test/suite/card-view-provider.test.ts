@@ -74,8 +74,8 @@ describe('CardViewProvider', () => {
         assert.ok(provider.currentCard, 'No card was drawn');
 
         const pile = state.getCardPile();
-        assert.equal(pile.length, 1, 'Card wasn\'t added to pile');
-        assert.equal(pile[0].name, provider.currentCard.name, 'Card wasn\'t added to pile');
+        assert.strictEqual(pile.length, 1, 'Card wasn\'t added to pile');
+        assert.strictEqual(pile[0].name, provider.currentCard.name, 'Card wasn\'t added to pile');
     });
 
     it('Draw multiple cards and add them to the pile', async () => {
@@ -90,8 +90,8 @@ describe('CardViewProvider', () => {
 
         const pile = state.getCardPile();
         const lastCardName = provider?.currentCard?.name;
-        assert.equal(pile.length, 3, 'Card wasn\'t added to pile');
-        assert.equal(pile[2].name, lastCardName, 'Card wasn\'t added to pile');
+        assert.strictEqual(pile.length, 3, 'Card wasn\'t added to pile');
+        assert.strictEqual(pile[2].name, lastCardName, 'Card wasn\'t added to pile');
     });
 
     it('Update deck', async () => {
@@ -99,10 +99,10 @@ describe('CardViewProvider', () => {
         provider.resolveWebviewView(webView, resolveContext, cancellationToken);
         provider.deck = new Deck(customDeckB);
 
-        assert.equal(provider.deck.deckType.name, customDeckB.name, 'Deck wasn\'t updated');
+        assert.strictEqual(provider.deck.deckType.name, customDeckB.name, 'Deck wasn\'t updated');
 
         await provider.drawCard();
-        assert.equal(provider.currentCard?.name, customDeckB.cards[0].name, 'Deck wasn\'t updated. Wrong card was picked');
+        assert.strictEqual(provider.currentCard?.name, customDeckB.cards[0].name, 'Deck wasn\'t updated. Wrong card was picked');
     });
 
     it('Acknowledge card and remove from pile', async () => {
@@ -112,11 +112,11 @@ describe('CardViewProvider', () => {
         provider.resolveWebviewView(webView, resolveContext, cancellationToken);
 
         await provider.drawCard();
-        assert.equal(state.getCardPile().length, 1, 'Card wasn\'t added to pile');
+        assert.strictEqual(state.getCardPile().length, 1, 'Card wasn\'t added to pile');
 
         await provider.acknowledge();
-        assert.equal(state.getCardPile().length, 0, 'Card wasn\'t removed from pile');
-        assert.equal(typeof provider.currentCard, 'undefined', 'There shouldn\'t be a current card');
+        assert.strictEqual(state.getCardPile().length, 0, 'Card wasn\'t removed from pile');
+        assert.strictEqual(typeof provider.currentCard, 'undefined', 'There shouldn\'t be a current card');
     });
 
     it('Acknowledge multiple cards and remove them from the pile', async () => {
@@ -132,12 +132,12 @@ describe('CardViewProvider', () => {
         
         await provider.drawCard();
         await provider.drawCard();
-        assert.equal(state.getCardPile().length, 3, 'Card wasn\'t added to pile');
+        assert.strictEqual(state.getCardPile().length, 3, 'Card wasn\'t added to pile');
 
         await provider.acknowledge();
         await provider.acknowledge();
-        assert.equal(state.getCardPile().length, 1, 'Card wasn\'t removed from pile');
-        assert.equal(provider.currentCard, firstCard, 'Current card should be first card drawn');
+        assert.strictEqual(state.getCardPile().length, 1, 'Card wasn\'t removed from pile');
+        assert.strictEqual(provider.currentCard, firstCard, 'Current card should be first card drawn');
     });
 
     it('Reset pile (acknowledge all)', async () => {
@@ -149,10 +149,10 @@ describe('CardViewProvider', () => {
         await provider.drawCard();
         await provider.drawCard();
         await provider.drawCard();
-        assert.equal(state.getCardPile().length, 3, 'Card wasn\'t added to pile');
+        assert.strictEqual(state.getCardPile().length, 3, 'Card wasn\'t added to pile');
         
         await provider.acknowledge(true);
-        assert.equal(state.getCardPile().length, 0, 'Pile should be empty');
-        assert.equal(typeof provider.currentCard, 'undefined', 'There shouldn\'t be a current card');
+        assert.strictEqual(state.getCardPile().length, 0, 'Pile should be empty');
+        assert.strictEqual(typeof provider.currentCard, 'undefined', 'There shouldn\'t be a current card');
     });
 });
