@@ -21,6 +21,18 @@ export default class CardView {
         return Math.ceil(amount * difficultyLevel);
     }
 
+    getPileClass(pile: Card[]) {
+        if (pile.length <= 1) {
+            return '';
+        }
+
+        if (pile.length > 3) {
+            return 'pile-many';
+        }
+
+        return `pile-${pile.length}`;
+    }
+
     renderHtml(): string {
         const { aggregatePile, useWeight, difficultyLevel, currentCard, pile } = this.props;
 
@@ -42,32 +54,34 @@ export default class CardView {
 
             return `
             ${new DifficultyIndicatorView({ difficultyLevel }).renderHtml()}
-            ${Object.keys(aggregatedPile).map((cardTypeName) => {
-                const amount = aggregatedPile[cardTypeName];
+            <div class="card">
+                ${Object.keys(aggregatedPile).map((cardTypeName) => {
+                    const amount = aggregatedPile[cardTypeName];
 
-                return `
-                <div class="card">
-                    <div class="card-title">
-                        ${cardTypeName}${useWeight ? ` (x${weightByCardTypeName[cardTypeName]})` : ''}:
-                        ${this.calculateAmount(amount, weightByCardTypeName[cardTypeName])}
-                    </div>
-                </div>
-                `;
-            }).join('')}
+                    return `
+                        <div class="card-title">
+                            ${cardTypeName}${useWeight ? ` <span class="card-weight">(x${weightByCardTypeName[cardTypeName]})</span>` : ''}:
+                            ${this.calculateAmount(amount, weightByCardTypeName[cardTypeName])}
+                        </div>
+                    `;
+                }).join('')}
+            </div>
             `;
         }
 
         if (currentCard) {
+            const cardTitle = `
+                ${currentCard.cardType ? currentCard.cardType.name + ':' : ''} ${currentCard.name} 
+                ${useWeight ? `<span class="card-weight">(x${currentCard.cardType?.weight || 1})</span>` : ''}
+            `;
             return `
                 ${new DifficultyIndicatorView({ difficultyLevel }).renderHtml()}
-                <div class="card">
-                    <div class="card-title">
-                        ${currentCard.cardType ? currentCard.cardType.name + ':' : ''} ${currentCard.name}
-                    </div>
-                    <p>
-                        Amount ${useWeight ? `(x${currentCard.cardType?.weight || 1})` : ''}:
+                <div class="card ${this.getPileClass(pile || [])}">
+                    <div class="card-title">${cardTitle}</div>
+                    <div class="card-pts">
                         ${this.calculateAmount(currentCard.points, currentCard.cardType?.weight)}
-                    </p>
+                    </div>
+                    <div class="card-title align-right">${cardTitle}</div>
                 </div>
             `;
         }

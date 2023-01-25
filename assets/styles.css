@@ -8,24 +8,79 @@ html {
     flex-direction: column;
 }
 
-.card-container {
-    margin: 1rem 0;
-}
-
-.card {
-    margin: 0.25rem 0;
-}
-
-.card-title {
-    font-size: 1.5rem;
-}
-
 .info-text {
     margin: 0.5rem 0 0.5rem 0;
 }
 
+/* Card View */
+.card {
+    display: flex;
+    flex-direction: column;
+    margin: 0.25rem 0;
+    min-height: 18rem;
+    max-width: 13rem;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    color: #000000;
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.5);
+}
+
+.pile-2 {
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.5),
+        3px 3px 0px 0px rgba(255, 255, 255, 0.5);
+}
+
+.pile-3 {
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.5),
+        3px 3px 0px 0px rgba(255, 255, 255, 0.5),
+        4px 4px 0px 0px rgba(0, 0, 0, 0.5),
+        5px 5px 0px 0px rgba(255, 255, 255, 0.5);
+}
+
+.pile-many {
+    box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.5),
+        3px 3px 0px 0px rgba(255, 255, 255, 0.5),
+        4px 4px 0px 0px rgba(0, 0, 0, 0.5),
+        5px 5px 0px 0px rgba(255, 255, 255, 0.5),
+        6px 6px 0px 0px rgba(0, 0, 0, 0.5),
+        7px 7px 0px 0px rgba(255, 255, 255, 0.5);
+}
+
+.card-title {
+    padding: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.card-weight {
+    margin: 0 0 0 0.2rem;
+    font-size: 1rem;
+}
+
+.card-pts {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+/* Difficulty Indicator View */
 .difficulty-indicator {
     padding: 0;
-    margin: 0;
-    text-align: right;
+    margin: 0.5rem 0 0.5rem 0;
+    text-align: left;
+}
+
+/* Pile View */
+.card-pile-count {
+    display: flex;
+    padding: 0;
+    margin: 1rem 0 1.5rem 0;
+    max-width: 13rem;
+    font-size: 1.5rem;
+    justify-content: flex-end;
 }
