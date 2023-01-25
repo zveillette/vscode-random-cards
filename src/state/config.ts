@@ -57,7 +57,7 @@ export class Config {
 
         return difficultyLevel;
     }
-    
+
     get customDecks(): DeckTypeJson[] {
         return this.getConfigValue(ConfigKeys.customDecks) as DeckTypeJson[];
     }
@@ -109,9 +109,21 @@ export class Config {
 
         await this.setConfigValue(ConfigKeys.difficultyLevel, difficultyLevel);
     }
-    
+
     async setCustomDecks(value: DeckTypeJson[]) {
         await this.setConfigValue(ConfigKeys.customDecks, value);
+    }
+
+    async reset() {
+        await this.setAggregatePile(false);
+        await this.setCustomDecks([]);
+        await this.setDeckType('standard');
+        await this.setDifficultyLevel(1);
+        await this.setIsBadgeNotificationEnabled(false);
+        await this.setIsNotificationEnabled(false);
+        await this.setPickEvery(-1);
+        await this.setPileUp(false);
+        await this.setUseWeight(false);
     }
 
     private async setConfigValue(key: ConfigKeys, value: unknown) {

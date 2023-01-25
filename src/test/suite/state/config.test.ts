@@ -8,17 +8,7 @@ describe('Config', () => {
     });
 
     beforeEach(async () => {
-        await Promise.all([
-            config.setAggregatePile(false),
-            config.setCustomDecks([]),
-            config.setDeckType('standard'),
-            config.setDifficultyLevel(1),
-            config.setIsBadgeNotificationEnabled(false),
-            config.setIsNotificationEnabled(false),
-            config.setPickEvery(-1),
-            config.setPileUp(false),
-            config.setUseWeight(false)
-        ]);
+        await config.reset();
     });
 
     it('When setting "AggregatePile", "PileUp" should be enabled', async () => {
