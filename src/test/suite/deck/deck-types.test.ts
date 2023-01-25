@@ -24,12 +24,12 @@ describe('DeckTypes', () => {
 
 
     let config: Config;
-    before(function () {
+    before(() => {
         config = new Config();
     });
 
     beforeEach(async () => {
-        config.setCustomDecks([]);
+        await config.setCustomDecks([]);
     });
 
     it('Get default deck types', () => {

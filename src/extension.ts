@@ -7,7 +7,7 @@ import { getDeckTypes } from './deck/deck-types';
 
 const DEFAULT_DECK = 'standard';
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext): Promise<vscode.ExtensionContext> {
     const config = new Config();
     const state = new WorkspaceState(context);
 
@@ -18,18 +18,6 @@ export function activate(context: vscode.ExtensionContext) {
     }
     const deck = new Deck(deckTypes[deckType]);
     const provider = new CardViewProvider(config, state, context.extensionUri, deck);
-
-    const onPileUpChange = () => {
-        if (!config.pileUp) {
-            vscode.workspace.getConfiguration(CONFIG_NAME).update(ConfigKeys.aggregatePile, false, vscode.ConfigurationTarget.Global);
-        }
-    };
-
-    const onAggregatePileChange = () => {
-        if (config.aggregatePile) {
-            vscode.workspace.getConfiguration(CONFIG_NAME).update(ConfigKeys.pileUp, true, vscode.ConfigurationTarget.Global);
-        }
-    };
 
     const onDeckTypeChange = () => {
         deckTypes = getDeckTypes(config);
@@ -62,14 +50,14 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand('zvRandomCards.resetPile', async () => {
             await provider.acknowledge(true);
         }),
-        vscode.workspace.onDidChangeConfiguration((e) => {
+        vscode.workspace.onDidChangeConfiguration(async (e) => {
             if (e.affectsConfiguration(`${CONFIG_NAME}.${ConfigKeys.aggregatePile}`)) {
-                onAggregatePileChange();
+                await config.setAggregatePile(config.aggregatePile);
                 return;
             }
 
             if (e.affectsConfiguration(`${CONFIG_NAME}.${ConfigKeys.pileUp}`)) {
-                onPileUpChange();
+                await config.setPileUp(config.pileUp);
                 return;
             }
 
@@ -84,6 +72,8 @@ export function activate(context: vscode.ExtensionContext) {
             }
         })
     );
+
+    return context;
 }
 
 export function deactivate() { }

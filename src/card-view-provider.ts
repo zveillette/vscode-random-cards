@@ -37,7 +37,19 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
         this._deck = deck;
     }
 
-    public async drawCard() {
+    public get deck(): Deck {
+        return this._deck;
+    }
+
+    public get currentCard(): Card | undefined {
+        return this._currentCard;
+    }
+
+    public get lastDraw(): Date | undefined {
+        return this._lastDraw;
+    }
+
+    public async drawCard(): Promise<Card> {
         this._deck.build().shuffle();
         this._currentCard = this._deck.draw(DeckPosition.top, 1)[0];
         this._lastDraw = new Date();
@@ -49,14 +61,16 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
         }
 
         if (this._config.pileUp) {
-            const pile = this._state.getCardPile();
+            const pile = [...this._state.getCardPile()];
             pile.push(this._currentCard);
-            this._state.setCardPile(pile);
+            await this._state.setCardPile(pile);
         } else {
-            this._state.setCardPile([]);
+            await this._state.setCardPile([]);
         }
 
         this._updateView();
+
+        return this._currentCard;
     }
 
     public async acknowledge(all?: boolean) {
