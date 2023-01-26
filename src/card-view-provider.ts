@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import CardView from './components/CardView';
+import PileCounterView from './components/PileCounterView';
 import { Config } from './state/config';
 import { Card, Deck, DeckPosition } from './deck/deck';
 import { WorkspaceState } from './state/workspace-state';
@@ -129,6 +130,7 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
     private _getHtml(webview: vscode.Webview) {
         const styles = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'assets', 'styles.css'));
         const { aggregatePile, difficultyLevel, useWeight } = this._config;
+        const pile = this._state.getCardPile();
 
         return `
         <!DOCTYPE html>
@@ -147,9 +149,8 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
             }
 
             ${this._currentCard ? `
-                <div class="card-container">
-                    ${new CardView({ aggregatePile, difficultyLevel, useWeight, currentCard: this._currentCard, pile: this._state.getCardPile() }).renderHtml()}
-                </div>
+                ${new CardView({ aggregatePile, difficultyLevel, useWeight, currentCard: this._currentCard, pile }).renderHtml()}
+                ${new PileCounterView({ pile }).renderHtml()}
                 ${this._lastDraw ? `
                 <div class="info-text">
                     <div>Last card picked at:</div>
@@ -163,14 +164,6 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
                 <div class="info-text">
                     <div>Next card will be picked at:</div>
                     <div>${this._state.getNextDraw()?.toLocaleString()}</div>
-                </div>
-                `: ''
-            }
-
-            ${this._state.getCardPile().length > 0 ? `
-                <div class="info-text">
-                    <div>Pile:</div>
-                    <div>${this._state.getCardPile().length}</div>
                 </div>
                 `: ''
             }
