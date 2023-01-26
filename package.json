@@ -6,7 +6,7 @@
   "repository": {
     "url": "https://github.com/zveillette/vscode-random-cards"
   },
-  "version": "0.0.11",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -63,78 +63,80 @@
         },
         "zvRandomCards.customDecks": {
           "type": "array",
-          "default": [{
-            "name": "MyCustomDeck",
-            "cards": [
+          "default": [
+            {
+              "name": "MyCustomDeck",
+              "cards": [
                 {
-                    "name": "Ace",
-                    "points": 11
+                  "name": "Ace",
+                  "points": 11
                 },
                 {
-                    "name": "2",
-                    "points": 2
+                  "name": "2",
+                  "points": 2
                 },
                 {
-                    "name": "3",
-                    "points": 3
+                  "name": "3",
+                  "points": 3
                 },
                 {
-                    "name": "4",
-                    "points": 4
+                  "name": "4",
+                  "points": 4
                 },
                 {
-                    "name": "5",
-                    "points": 5
+                  "name": "5",
+                  "points": 5
                 },
                 {
-                    "name": "6",
-                    "points": 6
+                  "name": "6",
+                  "points": 6
                 },
                 {
-                    "name": "7",
-                    "points": 7
+                  "name": "7",
+                  "points": 7
                 },
                 {
-                    "name": "8",
-                    "points": 8
+                  "name": "8",
+                  "points": 8
                 },
                 {
-                    "name": "9",
-                    "points": 9
+                  "name": "9",
+                  "points": 9
                 },
                 {
-                    "name": "10",
-                    "points": 10
+                  "name": "10",
+                  "points": 10
                 },
                 {
-                    "name": "Jack",
-                    "points": 10
+                  "name": "Jack",
+                  "points": 10
                 },
                 {
-                    "name": "Queen",
-                    "points": 10
+                  "name": "Queen",
+                  "points": 10
                 },
                 {
-                    "name": "King",
-                    "points": 10
+                  "name": "King",
+                  "points": 10
                 }
-            ],
-            "cardTypes": [
+              ],
+              "cardTypes": [
                 {
-                    "name": "Clubs"
+                  "name": "Clubs"
                 },
                 {
-                    "name": "Diamonds"
+                  "name": "Diamonds"
                 },
                 {
-                    "name": "Hearts"
+                  "name": "Hearts"
                 },
                 {
-                    "name": "Spades",
-                    "weight": 2
+                  "name": "Spades",
+                  "weight": 2
                 }
-            ]
-        }],
+              ]
+            }
+          ],
           "description": "Specify your own deck(s)."
         }
       }
