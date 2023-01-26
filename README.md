@@ -7,7 +7,7 @@ Also a great way to stretch between coding sessions as the cards can be changed 
 
 - Randomly pick cards from predefined or custom decks
 - Enable/Disable automatic card pick and set the interval
-- Change the deck to be small training exercices to take break and strech between your coding sessions
+- Change the deck to be small training exercices to take a break and strech between your coding sessions
 - Cards can be stacked into a pile to avoid missing them when they are picked automatically
 
 ## Creating your own deck

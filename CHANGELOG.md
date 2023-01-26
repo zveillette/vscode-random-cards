@@ -1,5 +1,14 @@
 # Change Log
 
+## 0.1.0
+
+- Major UI overhaul (a card is shown instead of just text)
+
+## 0.0.11
+
+- Fixed an issue where we would show undefined if using weight and not aggregate
+
+
 ## 0.0.10
 
 - Customize your deck with the new setting `customDecks`
