@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.0.1
+
+-Fixed an issue where icons wouldn't show
+
+## 1.0.0
+
+- Allow card icons
+- Removed difficulty indicator; can use weight instead
+- Polished readme
+
+
 ## 0.1.0
 
 - Major UI overhaul (a card is shown instead of just text)
