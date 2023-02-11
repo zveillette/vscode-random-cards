@@ -1,11 +1,9 @@
 import { Card } from "../deck/deck";
-import DifficultyIndicatorView from "./DifficultyIndicatorView";
 import IconView from "./IconView";
 
 type Props = {
     aggregatePile?: boolean,
     useWeight?: boolean,
-    difficultyLevel: number,
     currentCard?: Card;
     pile?: Card[];
 };
@@ -14,12 +12,12 @@ export default class CardView {
     constructor(public props: Props) { }
 
     calculateAmount(amount: number, weight: number = 1) {
-        const { useWeight, difficultyLevel } = this.props;
+        const { useWeight } = this.props;
         if (useWeight) {
-            return Math.ceil(amount * weight * difficultyLevel);
+            return Math.ceil(amount * weight);
         }
 
-        return Math.ceil(amount * difficultyLevel);
+        return Math.ceil(amount);
     }
 
     getPileClass(pile: Card[]) {
@@ -35,7 +33,7 @@ export default class CardView {
     }
 
     renderHtml(): string {
-        const { aggregatePile, useWeight, difficultyLevel, currentCard, pile } = this.props;
+        const { aggregatePile, useWeight, currentCard, pile } = this.props;
 
         if (aggregatePile) {
             const weightByCardTypeName: Record<string, number> = {};
@@ -54,7 +52,6 @@ export default class CardView {
             }, {});
 
             return `
-            ${new DifficultyIndicatorView({ difficultyLevel }).renderHtml()}
             <div class="card">
             ${Object.keys(aggregatedPile).map((cardTypeName) => {
                 const amount = aggregatedPile[cardTypeName];
@@ -74,7 +71,6 @@ export default class CardView {
             const useIcon = !!currentCard.cardType?.icon;
 
             return `
-                ${new DifficultyIndicatorView({ difficultyLevel }).renderHtml()}
                 <div class="card ${this.getPileClass(pile || [])}">
                     <div class="card-title">
                 ${useIcon ?

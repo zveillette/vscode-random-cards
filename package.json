@@ -56,11 +56,6 @@
           "default": false,
           "description": "The pile will be shown aggregated and the acknowledgment will acknowledge the whole pile."
         },
-        "zvRandomCards.difficultyLevel": {
-          "type": "number",
-          "default": 1,
-          "description": "A factor from which the result is multiplied with. Can be from 1 to 5."
-        },
         "zvRandomCards.customDecks": {
           "type": "array",
           "default": [

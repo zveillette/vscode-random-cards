@@ -131,7 +131,7 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
     private _getHtml(webview: vscode.Webview) {
         const styles = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'assets', 'styles.css'));
         const codiconsUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'node_modules', '@vscode/codicons', 'dist', 'codicon.css'));
-        const { aggregatePile, difficultyLevel, useWeight } = this._config;
+        const { aggregatePile, useWeight } = this._config;
         const pile = this._state.getCardPile();
 
         return `
@@ -152,7 +152,7 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
             }
 
             ${this._currentCard ? `
-                ${new CardView({ aggregatePile, difficultyLevel, useWeight, currentCard: this._currentCard, pile }).renderHtml()}
+                ${new CardView({ aggregatePile, useWeight, currentCard: this._currentCard, pile }).renderHtml()}
                 ${new PileCounterView({ pile }).renderHtml()}
                 ${this._lastDraw ? `
                 <div class="info-text">
