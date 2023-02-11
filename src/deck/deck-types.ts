@@ -6,7 +6,7 @@ export const getDeckTypes = (config: Config) => {
         standard: new DeckType(
             'standard',
             [
-                { name: 'Ace', points: 11 },
+                { name: 'A', points: 11 },
                 { name: '2', points: 2 },
                 { name: '3', points: 3 },
                 { name: '4', points: 4 },
@@ -16,16 +16,16 @@ export const getDeckTypes = (config: Config) => {
                 { name: '8', points: 8 },
                 { name: '9', points: 9 },
                 { name: '10', points: 10 },
-                { name: 'Jack', points: 10 },
-                { name: 'Queen', points: 10 },
-                { name: 'King', points: 10 },
+                { name: 'J', points: 10 },
+                { name: 'Q', points: 10 },
+                { name: 'K', points: 10 },
             ],
-            [{ name: 'Clubs' }, { name: 'Diamonds' }, { name: 'Hearts' }, { name: 'Spades' }]
+            [{ name: 'Clubs', icon: 'filter-filled' }, { name: 'Diamonds', icon: 'debug-breakpoint-log' }, { name: 'Hearts', icon: 'heart' }, { name: 'Spades', icon: 'debug-breakpoint-function' }]
         ),
         training: new DeckType(
             'training',
             [
-                { name: 'Ace', points: 11 },
+                { name: 'A', points: 11 },
                 { name: '2', points: 2 },
                 { name: '3', points: 3 },
                 { name: '4', points: 4 },
@@ -35,9 +35,9 @@ export const getDeckTypes = (config: Config) => {
                 { name: '8', points: 8 },
                 { name: '9', points: 9 },
                 { name: '10', points: 10 },
-                { name: 'Jack', points: 10 },
-                { name: 'Queen', points: 10 },
-                { name: 'King', points: 10 },
+                { name: 'J', points: 10 },
+                { name: 'Q', points: 10 },
+                { name: 'K', points: 10 },
             ],
             [
                 { name: 'Jumping Jacks', weight: 2 },

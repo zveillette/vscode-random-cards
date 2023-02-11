@@ -29,10 +29,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<vscode
         deck.deckType = deckTypes[config.deckType];
     };
 
-    const onCustomDecksChange = () => {
-        deckTypes = getDeckTypes(config);
-    };
-
     context.subscriptions.push(
         vscode.window.registerWebviewViewProvider(CardViewProvider.viewType, provider),
         new vscode.Disposable(() => provider.dispose()),
@@ -67,7 +63,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<vscode
             }
 
             if (e.affectsConfiguration(`${CONFIG_NAME}.${ConfigKeys.customDecks}`)) {
-                onCustomDecksChange();
+                onDeckTypeChange();
                 return;
             }
         })

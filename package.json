@@ -6,7 +6,7 @@
   "repository": {
     "url": "https://github.com/zveillette/vscode-random-cards"
   },
-  "version": "0.1.0",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -212,6 +212,7 @@
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+		"@vscode/codicons": "0.0.20",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "eslint": "^8.28.0",
