@@ -4,6 +4,7 @@ import PileCounterView from './components/PileCounterView';
 import { Config } from './state/config';
 import { Card, Deck, DeckPosition } from './deck/deck';
 import { WorkspaceState } from './state/workspace-state';
+import IconView from './components/IconView';
 
 export class CardViewProvider implements vscode.WebviewViewProvider {
 
@@ -129,7 +130,8 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
 
     private _getHtml(webview: vscode.Webview) {
         const styles = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'assets', 'styles.css'));
-        const { aggregatePile, difficultyLevel, useWeight } = this._config;
+        const codiconsUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'node_modules', '@vscode/codicons', 'dist', 'codicon.css'));
+        const { aggregatePile, useWeight } = this._config;
         const pile = this._state.getCardPile();
 
         return `
@@ -140,6 +142,7 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
                 <link href="${styles}" rel="stylesheet">
+				<link href="${codiconsUri}" rel="stylesheet" />
 				<title>Card view</title>
 			</head>
 			<body>
@@ -149,7 +152,7 @@ export class CardViewProvider implements vscode.WebviewViewProvider {
             }
 
             ${this._currentCard ? `
-                ${new CardView({ aggregatePile, difficultyLevel, useWeight, currentCard: this._currentCard, pile }).renderHtml()}
+                ${new CardView({ aggregatePile, useWeight, currentCard: this._currentCard, pile }).renderHtml()}
                 ${new PileCounterView({ pile }).renderHtml()}
                 ${this._lastDraw ? `
                 <div class="info-text">

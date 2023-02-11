@@ -22,24 +22,4 @@ describe('Config', () => {
         assert.strictEqual(config.pileUp, false, 'Wrong pile up');
         assert.strictEqual(config.aggregatePile, false, 'Wrong aggregate pile');
     });
-
-    it('Difficulty level should be between 1 & 5', async () => {
-        await config.setDifficultyLevel(-1);
-        assert.strictEqual(config.difficultyLevel, 1, 'Invalid difficulty level');
-
-        await config.setDifficultyLevel(1);
-        assert.strictEqual(config.difficultyLevel, 1, 'Invalid difficulty level');
-
-        await config.setDifficultyLevel(5);
-        assert.strictEqual(config.difficultyLevel, 5, 'Invalid difficulty level');
-
-        await config.setDifficultyLevel(2.5);
-        assert.strictEqual(config.difficultyLevel, 2, 'Invalid difficulty level');
-
-        await config.setDifficultyLevel(5.5);
-        assert.strictEqual(config.difficultyLevel, 5, 'Invalid difficulty level');
-
-        await config.setDifficultyLevel(6);
-        assert.strictEqual(config.difficultyLevel, 5, 'Invalid difficulty level');
-    });
 });

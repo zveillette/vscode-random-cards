@@ -1,10 +1,9 @@
 import { Card } from "../deck/deck";
-import DifficultyIndicatorView from "./DifficultyIndicatorView";
+import IconView from "./IconView";
 
 type Props = {
     aggregatePile?: boolean,
     useWeight?: boolean,
-    difficultyLevel: number,
     currentCard?: Card;
     pile?: Card[];
 };
@@ -13,12 +12,12 @@ export default class CardView {
     constructor(public props: Props) { }
 
     calculateAmount(amount: number, weight: number = 1) {
-        const { useWeight, difficultyLevel } = this.props;
+        const { useWeight } = this.props;
         if (useWeight) {
-            return Math.ceil(amount * weight * difficultyLevel);
+            return Math.ceil(amount * weight);
         }
 
-        return Math.ceil(amount * difficultyLevel);
+        return Math.ceil(amount);
     }
 
     getPileClass(pile: Card[]) {
@@ -34,7 +33,7 @@ export default class CardView {
     }
 
     renderHtml(): string {
-        const { aggregatePile, useWeight, difficultyLevel, currentCard, pile } = this.props;
+        const { aggregatePile, useWeight, currentCard, pile } = this.props;
 
         if (aggregatePile) {
             const weightByCardTypeName: Record<string, number> = {};
@@ -53,35 +52,44 @@ export default class CardView {
             }, {});
 
             return `
-            ${new DifficultyIndicatorView({ difficultyLevel }).renderHtml()}
             <div class="card">
-                ${Object.keys(aggregatedPile).map((cardTypeName) => {
-                    const amount = aggregatedPile[cardTypeName];
+            ${Object.keys(aggregatedPile).map((cardTypeName) => {
+                const amount = aggregatedPile[cardTypeName];
 
-                    return `
+                return `
                         <div class="card-title">
                             ${cardTypeName}${useWeight ? ` <span class="card-weight">(x${weightByCardTypeName[cardTypeName]})</span>` : ''}:
                             ${this.calculateAmount(amount, weightByCardTypeName[cardTypeName])}
                         </div>
                     `;
-                }).join('')}
+            }).join('')}
             </div>
             `;
         }
 
         if (currentCard) {
-            const cardTitle = `
-                ${currentCard.cardType ? currentCard.cardType.name + ':' : ''} ${currentCard.name} 
-                ${useWeight ? `<span class="card-weight">(x${currentCard.cardType?.weight || 1})</span>` : ''}
-            `;
+            const useIcon = !!currentCard.cardType?.icon;
+
             return `
-                ${new DifficultyIndicatorView({ difficultyLevel }).renderHtml()}
                 <div class="card ${this.getPileClass(pile || [])}">
-                    <div class="card-title">${cardTitle}</div>
+                    <div class="card-title">
+                ${useIcon ?
+                    `${new IconView({ name: currentCard?.cardType?.icon || '', title: currentCard?.cardType?.name, size: "1.5rem" }).renderHtml()} ${currentCard.name}`
+                    :
+                    currentCard?.cardType?.name ? `${currentCard?.cardType?.name}: ${currentCard.name}` : currentCard.name
+                }
+                    </div>
                     <div class="card-pts">
                         ${this.calculateAmount(currentCard.points, currentCard.cardType?.weight)}
+                        ${useWeight ? `<span class="card-weight">${currentCard.cardType?.weight || 1} x ${currentCard.points}</span>` : ''}
                     </div>
-                    <div class="card-title align-right">${cardTitle}</div>
+                    <div class="card-title align-right">
+                ${useIcon ?
+                    `${currentCard.name} ${new IconView({ name: currentCard?.cardType?.icon || '', title: currentCard?.cardType?.name, size: "1.5rem" }).renderHtml()}`
+                    :
+                    currentCard?.cardType?.name ? `${currentCard?.cardType?.name}: ${currentCard.name}` : currentCard.name
+                }
+                    </div>
                 </div>
             `;
         }

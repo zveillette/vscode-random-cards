@@ -6,7 +6,7 @@
   "repository": {
     "url": "https://github.com/zveillette/vscode-random-cards"
   },
-  "version": "0.1.0",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -55,11 +55,6 @@
           "type": "boolean",
           "default": false,
           "description": "The pile will be shown aggregated and the acknowledgment will acknowledge the whole pile."
-        },
-        "zvRandomCards.difficultyLevel": {
-          "type": "number",
-          "default": 1,
-          "description": "A factor from which the result is multiplied with. Can be from 1 to 5."
         },
         "zvRandomCards.customDecks": {
           "type": "array",
@@ -212,6 +207,7 @@
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+		"@vscode/codicons": "0.0.20",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "eslint": "^8.28.0",

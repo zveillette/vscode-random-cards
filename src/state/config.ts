@@ -10,7 +10,6 @@ export enum ConfigKeys {
     nextDraw = 'nextDraw',
     enableNotification = 'enableNotification',
     pileUp = 'pileUp',
-    difficultyLevel = 'difficultyLevel',
     aggregatePile = 'aggregatePile',
     useWeight = 'useWeight',
     customDecks = 'customDecks'
@@ -43,19 +42,6 @@ export class Config {
 
     get aggregatePile(): boolean {
         return Boolean(this.getConfigValue(ConfigKeys.aggregatePile));
-    }
-
-    get difficultyLevel(): number {
-        const difficultyLevel = this.getConfigValue(ConfigKeys.difficultyLevel) as number;
-
-        if (difficultyLevel < 1) {
-            return 1;
-        }
-        if (difficultyLevel > 5) {
-            return 5;
-        }
-
-        return difficultyLevel;
     }
 
     get customDecks(): DeckTypeJson[] {
@@ -98,18 +84,6 @@ export class Config {
         }
     }
 
-    async setDifficultyLevel(value: number) {
-        let difficultyLevel = Math.floor(value);
-        if (value < 1) {
-            difficultyLevel = 1;
-        }
-        if (value > 5) {
-            difficultyLevel = 5;
-        }
-
-        await this.setConfigValue(ConfigKeys.difficultyLevel, difficultyLevel);
-    }
-
     async setCustomDecks(value: DeckTypeJson[]) {
         await this.setConfigValue(ConfigKeys.customDecks, value);
     }
@@ -118,7 +92,6 @@ export class Config {
         await this.setAggregatePile(false);
         await this.setCustomDecks([]);
         await this.setDeckType('standard');
-        await this.setDifficultyLevel(1);
         await this.setIsBadgeNotificationEnabled(false);
         await this.setIsNotificationEnabled(false);
         await this.setPickEvery(-1);
