@@ -23,23 +23,31 @@ describe('CardView', () => {
             assert.strictEqual(getPoints(cardHtml), '1', 'Wrong card points');
         });
 
+        it('With icons', () => {
+            let currentCard = { name: 'CardA', points: 1, cardType: { name: 'TypeA', icon: 'icon-a' } } as Card;
+            let cardView = new CardView({ currentCard });
+            const cardHtml = cardView.renderHtml();
+            
+            assert.strictEqual(getNames(cardHtml)[0], '<i class="icon codicon codicon-icon-a" title="TypeA" style="font-size: 1.5rem; min-width: 1.5rem"></i> CardA', 'Wrong name displayed');
+        });
+
         it('Using weight', () => {
             const currentCard = { name: 'CardA', points: 1, cardType: { name: 'TypeA' } } as Card;
             const cardView = new CardView({ useWeight: true, currentCard });
             const cardHtml = cardView.renderHtml();
 
-            assert.strictEqual(getNames(cardHtml)[0], 'TypeA: CardA <span class="card-weight">(x1)</span>', 'Wrong name displayed');
-            assert.strictEqual(getPoints(cardHtml), '1', 'Wrong card points');
+            assert.strictEqual(getNames(cardHtml)[0], 'TypeA: CardA', 'Wrong name displayed');
+            assert.strictEqual(getPoints(cardHtml), '1 <span class="card-weight">1 x 1</span>', 'Wrong card points');
         });
 
         it('Check weight calculation', () => {
             let currentCard = { name: 'CardA', points: 12, cardType: { name: 'TypeA', weight: 2 } } as Card;
             let cardView = new CardView({ useWeight: true, currentCard });
-            assert.strictEqual(getPoints(cardView.renderHtml()), '24', 'Wrong card points');
+            assert.strictEqual(getPoints(cardView.renderHtml()), '24 <span class="card-weight">2 x 12</span>', 'Wrong card points');
 
             currentCard = { name: 'CardA', points: 5, cardType: { name: 'TypeA', weight: 0.2635 } } as Card;
             cardView = new CardView({ useWeight: true, currentCard });
-            assert.strictEqual(getPoints(cardView.renderHtml()), '2', 'Wrong card points');
+            assert.strictEqual(getPoints(cardView.renderHtml()), '2 <span class="card-weight">0.2635 x 5</span>', 'Wrong card points');
         });
     });
 

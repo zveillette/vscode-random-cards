@@ -11,7 +11,7 @@ export default class IconView {
         const { name, title, size } = this.props;
 
         return `
-            <i class="icon codicon codicon-${name}" title="${title}" style="font-size: ${size || '16px'}; min-width: ${size}"></i>
+            <i class="icon codicon codicon-${name}" title="${title || ''}" style="font-size: ${size || '16px'}; min-width: ${size || '16px'}"></i>
         `;
     }
 }
